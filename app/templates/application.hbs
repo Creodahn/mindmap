@@ -1,7 +1,12 @@
 {{page-title "Mindmap"}}
+<ul>
+  {{#each this.rootEntries as |root|}}
+    <li>
+      <ChildList @model={{root}} @open={{this.open}} />
+    </li>
+  {{/each}}
+</ul>
 
-{{!-- The following component displays Ember's default welcome message. --}}
-<WelcomePage />
-{{!-- Feel free to remove this! --}}
-
-{{outlet}}
+{{#if this.entryToEdit}}
+  <Modal @model={{this.entryToEdit}} @cancel={{this.cancel}} @delete={{this.delete}} @save={{this.save}} />
+{{/if}}

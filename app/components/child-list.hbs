@@ -1,0 +1,10 @@
+<ul>
+  <li>
+    <button type="button" {{on "click" (fn @open @model)}}>
+      {{@model.title}}
+    </button>
+  </li>
+  {{#each @model.children as |child|}}
+    <ChildList @model={{child}} @open={{@open}} />
+  {{/each}}
+</ul>
