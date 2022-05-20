@@ -4,13 +4,14 @@
       Edit entry
     </header>
     <main class="modal-content">
-      <input value={{@model.title}} type="text" {{on "input" (pick "target.value" (set @model "title") value="target.value")}} />
+      <input value={{@model.title}} type="text" {{on "input" (pick "target.value" (set @model "title"))}} />
       <textarea value={{@model.description}} />
     </main>
     <footer class="modal-footer">
-      <button type="button" {{on "click" (fn @cancel)}}>Cancel</button>
-      <button type="button" {{on "click" (fn @delete)}}>Delete</button>
-      <button type="button" {{on "click" (fn @save)}}>Save</button>
+      <button type="button" {{on "click" @cancel}}>Cancel</button>
+      <button type="button" {{on "click" @delete}}>Delete</button>
+      <button type="button" {{on "click" @save}}>Save</button>
+      <button type="button" {{on "click" @createNewNode}}>Add Child Node</button>
     </footer>
   </div>
 

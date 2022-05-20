@@ -1,11 +1,14 @@
 import { action } from '@ember/object';
 import { isEmpty } from '@ember/utils';
+import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import Controller from '@ember/controller';
 
 export default class ApplicationController extends Controller {
   @tracked model;
   @tracked entryToEdit;
+
+  @service store;
 
   get rootEntries() {
     let result = this.model.filter((entry) => {
@@ -19,6 +22,13 @@ export default class ApplicationController extends Controller {
   @action
   cancel() {
     this.entryToEdit = null;
+  }
+
+  @action
+  createNewNode() {
+    this.entryToEdit = this.store.createRecord('entry', {
+      parent: this.entryToEdit,
+    });
   }
 
   @action

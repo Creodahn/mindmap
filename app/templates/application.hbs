@@ -1,12 +1,16 @@
 {{page-title "Mindmap"}}
-<ul>
-  {{#each this.rootEntries as |root|}}
-    <li>
-      <ChildList @model={{root}} @open={{this.open}} />
-    </li>
-  {{/each}}
-</ul>
+{{#each this.rootEntries as |root|}}
+  <ul id="root-{{root.id}}" class="map-root">
+    <ChildList @model={{root}} @open={{this.open}} />
+  </ul>
+{{/each}}
 
 {{#if this.entryToEdit}}
-  <Modal @model={{this.entryToEdit}} @cancel={{this.cancel}} @delete={{this.delete}} @save={{this.save}} />
+  <Modal
+    @model={{this.entryToEdit}}
+    @cancel={{this.cancel}}
+    @createNewNode={{this.createNewNode}}
+    @delete={{this.delete}}
+    @save={{this.save}}
+  />
 {{/if}}

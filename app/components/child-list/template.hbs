@@ -1,0 +1,23 @@
+<li class="child-list">
+  <button
+    id="child-{{@model.id}}"
+    class="round-button"
+    type="button"
+    {{did-insert this.connect}}
+    {{on "click" (fn @open @model)}}
+  >
+    {{@model.title}}
+  </button>
+  <ul class="child-list-root">
+    {{#each @model.children as |child|}}
+      <ChildList @model={{child}} @open={{@open}} />
+    {{/each}}
+  </ul>
+</li>
+{{#if this.showConnector}}
+  <NodeConnector
+    @model={{@model}}
+    @childCoordinates={{this.childCoordinates}}
+    @parentCoordinates={{this.parentCoordinates}}
+  />
+{{/if}}
