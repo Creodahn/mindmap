@@ -2,6 +2,7 @@ import Model, { attr, belongsTo, hasMany } from '@ember-data/model';
 
 export default class EntryModel extends Model {
   @attr('string') description;
+  @attr({ defaultValue: null, readOnly: true }) parentConnectorAttributes;
   @attr('string') title;
   @belongsTo('entry', { inverse: 'children' }) parent;
   @hasMany('entry', { inverse: 'parent' }) children;
@@ -22,6 +23,6 @@ export default class EntryModel extends Model {
   }
 
   get rootId() {
-    return this.parent?.get('id') ? this.parent?.get('rootId') : this.id;
+    return this.parent ? this.parent.get('rootId') : this.id;
   }
 }

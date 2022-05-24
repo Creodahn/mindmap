@@ -8,15 +8,11 @@ export default class ApplicationController extends Controller {
   @tracked model;
   @tracked entryToEdit;
 
+  @service connector;
   @service store;
 
   get rootEntries() {
-    let result = this.model.filter((entry) => {
-      console.log(entry);
-      return isEmpty(entry.get('parent.id'));
-    });
-    console.log(result);
-    return result;
+    return this.model.filter((entry) => isEmpty(entry.get('parent.id')));
   }
 
   @action
@@ -26,9 +22,8 @@ export default class ApplicationController extends Controller {
 
   @action
   createNewNode() {
-    this.entryToEdit = this.store.createRecord('entry', {
-      parent: this.entryToEdit,
-    });
+    this.parentForNewEntry = this.entryToEdit;
+    this.entryToEdit = this.store.createRecord('entry');
   }
 
   @action
@@ -45,6 +40,13 @@ export default class ApplicationController extends Controller {
   @action
   async save() {
     await this.entryToEdit.save();
+
+    if (this.parentForNewEntry) {
+      this.entryToEdit.parent = this.parentForNewEntry;
+      this.parentForNewEntry = null;
+      this.entryToEdit.save();
+    }
+
     this.cancel();
   }
 }

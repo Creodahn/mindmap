@@ -1,8 +1,12 @@
 <div
   class="node-connector"
   id="connector-{{@model.parent.id}}-{{@model.id}}"
-  {{did-insert this.setupConnector}}
   {{style
-    (hash height=this.height left=this.left top=this.top transform=this.transform)
+    (hash
+      height=@model.parentConnectorAttributes.height
+      left=@model.parentConnectorAttributes.left
+      top=@model.parentConnectorAttributes.top
+      transform=@model.parentConnectorAttributes.transform
+    )
   }}
 ></div>

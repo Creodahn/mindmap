@@ -1,9 +1,10 @@
-<li class="child-list">
+<li id="child-list-{{@model.parent.id}}-{{@model.id}}" class="child-list">
   <button
     id="child-{{@model.id}}"
     class="round-button"
     type="button"
-    {{did-insert this.connect}}
+    {{did-insert (fn this.connect @model)}}
+    {{did-update (fn this.reconnect @model) @model.children.length}}
     {{on "click" (fn @open @model)}}
   >
     {{@model.title}}
@@ -17,7 +18,5 @@
 {{#if this.showConnector}}
   <NodeConnector
     @model={{@model}}
-    @childCoordinates={{this.childCoordinates}}
-    @parentCoordinates={{this.parentCoordinates}}
   />
 {{/if}}

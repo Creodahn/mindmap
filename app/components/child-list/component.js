@@ -1,27 +1,33 @@
 import { action } from '@ember/object';
+import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import Component from '@glimmer/component';
 
 export default class ChildListComponent extends Component {
-  @tracked childCoordinates;
-  @tracked parentCoordinates;
+  @tracked showConnector = false;
+  @service connector;
 
-  get showConnector() {
-    return this.parentCoordinates && this.childCoordinates;
+  get connectorAttrs() {
+    return this.args.model.parentConnectorAttributes || {};
   }
 
   @action
-  connect() {
-    let model = this.args.model;
+  connect(model) {
+    if (model.get('parent.id')) {
+      model.parentConnectorAttributes = this.connector.connect(model);
 
-    console.log(`#root-${model.rootId}`, `#child-${model.parent?.get('id')}`);
-
-    if (model.parent.get('id')) {
-      let parent = document.querySelector(`#child-${model.parent.get('id')}`);
-      let child = document.querySelector(`#child-${model.id}`);
-
-      this.parentCoordinates = parent.getBoundingClientRect();
-      this.childCoordinates = child.getBoundingClientRect();
+      if (model.id === this.args.model.id) {
+        this.showConnector = true;
+      }
     }
+  }
+
+  @action
+  reconnect(model) {
+    this.connect(model);
+
+    console.log('reconnecting');
+
+    model.children.forEach((child) => this.connect(child));
   }
 }
