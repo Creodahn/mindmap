@@ -60,7 +60,7 @@ ul {
 
 .node-connector {
   border-left: 2px solid black;
-  position: fixed;
+  position: absolute;
   transform-origin: top left;
   width: 2px;
 }

@@ -5,7 +5,7 @@ export default function (server) {
   */
   // server.createList('post', 10);
 
-  server.createList('entry', 2, 'grandparent');
+  server.createList('entry', 1, 'grandparent');
   // let centralIdea = server.create('entry', 'parent');
 
   // server

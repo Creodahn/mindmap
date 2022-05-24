@@ -5,7 +5,9 @@ import Component from '@glimmer/component';
 
 export default class ChildListComponent extends Component {
   @tracked showConnector = false;
+
   @service connector;
+  @service store;
 
   get connectorAttrs() {
     return this.args.model.parentConnectorAttributes || {};
@@ -16,7 +18,7 @@ export default class ChildListComponent extends Component {
     if (model.get('parent.id')) {
       model.parentConnectorAttributes = this.connector.connect(model);
 
-      if (model.id === this.args.model.id) {
+      if (model.get('id') === this.args.model.id) {
         this.showConnector = true;
       }
     }
@@ -24,10 +26,16 @@ export default class ChildListComponent extends Component {
 
   @action
   reconnect(model) {
+    console.log('reconnecting', model.id);
     this.connect(model);
+    model.get('children')?.forEach((child) => this.reconnect(child));
+  }
 
-    console.log('reconnecting');
-
-    model.children.forEach((child) => this.connect(child));
+  @action
+  reconnectAll(model) {
+    console.log('reconnecting all', model);
+    if (model.rootId) {
+      this.reconnect(this.store.peekRecord('entry', model.rootId));
+    }
   }
 }

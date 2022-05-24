@@ -2,9 +2,10 @@
   <button
     id="child-{{@model.id}}"
     class="round-button"
+    data-child-count={{@model.children.length}}
     type="button"
     {{did-insert (fn this.connect @model)}}
-    {{did-update (fn this.reconnect @model) @model.children.length}}
+    {{did-update (fn this.reconnectAll @model) @model.children.length}}
     {{on "click" (fn @open @model)}}
   >
     {{@model.title}}

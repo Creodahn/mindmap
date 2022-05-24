@@ -18,8 +18,8 @@ class ConnectorAttrs {
 
 export default class ConnectorService extends Service {
   connect(model) {
-    let parent = document.querySelector(`#child-${model.parent.get('id')}`);
-    let child = document.querySelector(`#child-${model.id}`);
+    let parent = document.querySelector(`#child-${model.get('parent.id')}`);
+    let child = document.querySelector(`#child-${model.get('id')}`);
 
     if (parent && child) {
       return this.setupConnector(

@@ -13,13 +13,13 @@ export default Factory.extend({
   }),
   grandparent: trait({
     afterCreate(parent, server) {
-      server.createList('entry', 2, 'intermediate', { parent });
+      server.createList('entry', 5, 'intermediate', { parent });
     },
   }),
   intermediate: trait({
     parent: association(),
     afterCreate(parent, server) {
-      server.createList('entry', 2, 'child', { parent });
+      server.createList('entry', faker.datatype.number({ min: 0, max: 3 }), 'child', { parent });
     },
   }),
   parent: trait({

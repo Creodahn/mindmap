@@ -23,6 +23,6 @@ export default class EntryModel extends Model {
   }
 
   get rootId() {
-    return this.parent ? this.parent.get('rootId') : this.id;
+    return this.parent.get('id') ? this.parent.get('rootId') : this.id;
   }
 }
