@@ -1,0 +1,12 @@
+.round-button {
+  background-color: blue;
+  border-radius: 50%;
+  border-width: 0;
+  color: white;
+  cursor: pointer;
+  height: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100px;
+  z-index: 1;
+}

@@ -1,0 +1,38 @@
+.child-list {
+  display: block;
+  position: absolute;
+  z-index: 2;
+}
+
+.child-list-root {
+  @include on-circle($circle-size: 320px, $item-size: 100px);
+
+  border-radius: 50%;
+  margin-top: 16px;
+  position: relative;
+}
+
+.map-root {
+  align-items: center;
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  height: 100vh;
+  justify-content: space-between;
+  width: 100vw;
+
+  & > .child-list {
+    margin: 0 auto;
+    position: relative;
+
+    & > .round-button {
+      left: calc(50% - 50px);
+      position: absolute;
+      top: calc(50% - 50px);
+    }
+    
+    & > .child-list-root {
+      margin: 0;
+    }
+  }
+}

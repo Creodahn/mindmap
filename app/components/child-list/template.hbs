@@ -1,4 +1,13 @@
-<li id="child-list-{{@model.parent.id}}-{{@model.id}}" class="child-list">
+<li
+  class="child-list" 
+  id="child-list-{{@model.parent.id}}-{{@model.id}}"
+  {{style
+    (hash
+      left=this.styles.left
+      top=this.styles.top
+    )
+  }}
+>
   <button
     id="child-{{@model.id}}"
     class="round-button"
@@ -10,11 +19,13 @@
   >
     {{@model.title}}
   </button>
-  <ul class="child-list-root">
-    {{#each @model.children as |child|}}
-      <ChildList @model={{child}} @open={{@open}} />
-    {{/each}}
-  </ul>
+  {{#if @model.children}}
+    <ul class="child-list-root">
+      {{#each @model.children as |child index|}}
+        <ChildList @multiplier={{index}} @model={{child}} @open={{@open}} />
+      {{/each}}
+    </ul>
+  {{/if}}
 </li>
 {{#if this.showConnector}}
   <NodeConnector

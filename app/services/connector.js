@@ -18,34 +18,50 @@ class ConnectorAttrs {
 
 export default class ConnectorService extends Service {
   connect(model) {
-    let parent = document.querySelector(`#child-${model.get('parent.id')}`);
-    let child = document.querySelector(`#child-${model.get('id')}`);
+    let parent = this.getParentNode(model);
+    let container = this.getContainer(model);
+    let child = this.getChildNode(model);
 
     if (parent && child) {
-      return this.setupConnector(
-        parent.getBoundingClientRect(),
-        child.getBoundingClientRect()
-      );
+      return this.setupConnector(parent, container, child);
     }
 
     return {};
   }
 
-  setupConnector(parent, child) {
+  getChildNode(model) {
+    return document
+      .querySelector(`#child-${model.get('id')}`)
+      ?.getBoundingClientRect();
+  }
+
+  getContainer(model) {
+    return document
+      .querySelector(`#child-${model.get('parent.id')} ~ .child-list-root`)
+      ?.getBoundingClientRect();
+  }
+
+  getParentNode(model) {
+    return document
+      .querySelector(`#child-${model.get('parent.id')}`)
+      ?.getBoundingClientRect();
+  }
+
+  setupConnector(parent, container, child) {
     let top = parent.top + parent.height / 2;
     let childTop = child.top + child.height / 2;
     let left = parent.left + parent.width / 2;
     let childLeft = child.left + child.width / 2;
-    let skewAngle =
-      Math.atan2(child.top - parent.top, child.left - parent.left) *
-      (180 / Math.PI);
+    let topForAngle = childTop - top;
+    let leftForAngle = childLeft - left;
+    let skewAngle = Math.atan2(topForAngle, leftForAngle) * (180 / Math.PI);
     let height = Math.sqrt(
-      Math.pow(childTop - top, 2) + Math.pow(childLeft - left, 2)
+      Math.pow(topForAngle, 2) + Math.pow(leftForAngle, 2)
     );
 
     return new ConnectorAttrs({
-      top: `${top}px`,
-      left: `${left}px`,
+      top: `${container.height / 2}px`,
+      left: `${container.width / 2}px`,
       height: `${height}px`,
       transform: `rotate(${skewAngle - 90}deg)`,
     });

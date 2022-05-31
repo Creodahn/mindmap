@@ -8,6 +8,10 @@ export default class EntryModel extends Model {
   @hasMany('entry', { inverse: 'parent' }) children;
   @hasMany('note') notes;
 
+  get angle() {
+    return 360 / this.siblingCount;
+  }
+
   get childCount() {
     return this.children.length || 0;
   }
@@ -24,5 +28,9 @@ export default class EntryModel extends Model {
 
   get rootId() {
     return this.parent.get('id') ? this.parent.get('rootId') : this.id;
+  }
+
+  get siblingCount() {
+    return this.parent.get('childCount');
   }
 }
