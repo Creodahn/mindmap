@@ -29,22 +29,22 @@ export default class ConnectorService extends Service {
     return {};
   }
 
+  getBoundingRect(selectorString) {
+    return document.querySelector(selectorString)?.getBoundingClientRect();
+  }
+
   getChildNode(model) {
-    return document
-      .querySelector(`#child-${model.get('id')}`)
-      ?.getBoundingClientRect();
+    return this.getBoundingRect(`#child-${model.get('id')}`);
   }
 
   getContainer(model) {
-    return document
-      .querySelector(`#child-${model.get('parent.id')} ~ .child-list-root`)
-      ?.getBoundingClientRect();
+    return this.getBoundingRect(
+      `#child-${model.get('parent.id')} ~ .child-list-root`
+    );
   }
 
   getParentNode(model) {
-    return document
-      .querySelector(`#child-${model.get('parent.id')}`)
-      ?.getBoundingClientRect();
+    return this.getBoundingRect(`#child-${model.get('parent.id')}`);
   }
 
   setupConnector(parent, container, child) {
