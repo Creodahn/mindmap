@@ -48,22 +48,19 @@ export default class ConnectorService extends Service {
   }
 
   setupConnector(parent, container, child) {
-    let top = parent.top + parent.height / 2;
-    let childTop = child.top + child.height / 2;
-    let left = parent.left + parent.width / 2;
-    let childLeft = child.left + child.width / 2;
-    let topForAngle = childTop - top;
-    let leftForAngle = childLeft - left;
-    let skewAngle = Math.atan2(topForAngle, leftForAngle) * (180 / Math.PI);
-    let height = Math.sqrt(
-      Math.pow(topForAngle, 2) + Math.pow(leftForAngle, 2)
-    );
+    let parentY = parent.y + parent.height / 2;
+    let childY = child.y + child.height / 2;
+    let parentX = parent.x + parent.width / 2;
+    let childX = child.x + child.width / 2;
+    let yForAngle = parentY - childY;
+    let xForAngle = parentX - childX;
+    let skewAngle = 90 + Math.atan2(yForAngle, xForAngle) * (180 / Math.PI);
 
     return new ConnectorAttrs({
       top: `${container.height / 2}px`,
       left: `${container.width / 2}px`,
-      height: `${height}px`,
-      transform: `rotate(${skewAngle - 90}deg)`,
+      height: `${container.width / 2}px`,
+      transform: `rotate(${skewAngle}deg)`,
     });
   }
 }

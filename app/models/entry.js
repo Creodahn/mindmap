@@ -9,21 +9,52 @@ export default class EntryModel extends Model {
   @hasMany('note') notes;
 
   get angle() {
-    return 360 / this.siblingCount;
+    return this.siblingCount > 0 ? 360 / this.siblingCount : 0;
   }
 
   get childCount() {
-    return this.children.length || 0;
+    return this.children?.length || 0;
   }
 
   get cumulativeChildCount() {
     return (
       this.childCount +
-      this.children.reduce(
-        (prevChild, currentChild) =>
-          (prevChild?.childCount || 0) + currentChild.childCount
-      )
+        this.children.reduce(
+          (prevChild, currentChild) =>
+            (prevChild?.cumulativeChildCount || 0) +
+            currentChild?.cumulativeChildCount
+        ) || 0
     );
+  }
+
+  get cumulativeChildren() {
+    return this.children.map((child) => child.get('children')).flat();
+  }
+
+  get childDepth() {
+    return this.childCount > 0 ? this.depth + 1 : this.depth;
+  }
+
+  get deepestChild() {
+    return this.hasChildren
+      ? Math.max(...this.children.map((child) => child.childDepth))
+      : this.depth;
+  }
+
+  get depth() {
+    if (this.isRoot) {
+      return 0;
+    } else {
+      return this.parent.get('depth') + 1;
+    }
+  }
+
+  get isRoot() {
+    return this.id === this.rootId;
+  }
+
+  get hasChildren() {
+    return this.children.length > 0;
   }
 
   get rootId() {
@@ -31,6 +62,6 @@ export default class EntryModel extends Model {
   }
 
   get siblingCount() {
-    return this.parent.get('childCount');
+    return this.parent?.get('childCount');
   }
 }

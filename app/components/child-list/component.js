@@ -26,11 +26,15 @@ export default class ChildListComponent extends Component {
   @service store;
 
   get angle() {
-    return this.args.model?.angle;
+    return this.entry?.angle;
   }
 
   get connectorAttrs() {
-    return this.args.model.parentConnectorAttributes || {};
+    return this.entry?.parentConnectorAttributes || {};
+  }
+
+  get entry() {
+    return this.args.model || {};
   }
 
   get multiplier() {
@@ -41,11 +45,13 @@ export default class ChildListComponent extends Component {
     if (this.angle && this.multiplier >= 0) {
       let angle = this.angle * this.multiplier;
       let ratio = (Math.PI * (angle - 90)) / 180;
-      let radius = this.connector.getContainer(this.args.model).width / 2;
+      let radius = this.connector.getContainer(this.entry).width / 2;
       let result = new NodeAttrs({
         left: `${radius * Math.sin(ratio) + radius}px`,
         top: `${radius * Math.cos(ratio) + radius}px`,
       });
+
+      // debugger
 
       console.log(result);
 
@@ -60,7 +66,7 @@ export default class ChildListComponent extends Component {
     if (model.get('parent.id')) {
       model.parentConnectorAttributes = this.connector.connect(model);
 
-      if (model.get('id') === this.args.model.id) {
+      if (model.get('id') === this.entry?.id) {
         this.showConnector = true;
       }
     }
